@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:etp/auth/login_page.dart';
 import 'package:etp/base/ui/themes/theme.dart';
 import 'package:etp/base/ui/themes/util.dart';
+import 'package:etp/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -19,8 +21,11 @@ class MyApp extends StatelessWidget {
     TextTheme textTheme = createTextTheme(context, "Roboto", "Roboto");
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
+        navigatorKey: Constants.globalNavigatorKey,
         title: 'ETP',
-        theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
         home: Scaffold(
           appBar: null,
           body: Builder(builder: (context) {
