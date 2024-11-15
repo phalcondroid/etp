@@ -210,8 +210,8 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Se ha enviado una solicitud'),
-                Text('Estas dentro de 50 metros del semáforo mas cercano'),
+                Text('Se ha enviado una solicitud de activación'),
+                Text('Estas a 50 metros del semáforo más cercano'),
               ],
             ),
           ),
@@ -276,16 +276,18 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
           .buffer
           .asUint8List();
     }
+// CHANGE LUISA
+// Se comentan las líneas que pintan la estación de bomberos
 
-    getBytesFromAsset('assets/fire_station.png', 80).then((onValue) {
-      destinationIcon = BitmapDescriptor.fromBytes(onValue);
-      _destinationMarker = Marker(
-          markerId: MarkerId("destination"),
-          icon: destinationIcon,
-          position: const LatLng(4.729116356867422, -74.04060057469925));
+    //getBytesFromAsset('assets/fire_station.png', 80).then((onValue) {
+      //destinationIcon = BitmapDescriptor.fromBytes(onValue);
+      //_destinationMarker = Marker(
+        //  markerId: MarkerId("destination"),
+         // icon: destinationIcon,
+          // position: const LatLng(4.729116356867422, -74.04060057469925));
 
-      markerList.add(_destinationMarker);
-    });
+      //markerList.add(_destinationMarker);
+    //});
 
     getBytesFromAsset('assets/traffic_lights.png', 80).then((onValue) {
       var trafficicon = BitmapDescriptor.fromBytes(onValue);
@@ -369,19 +371,44 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
     if (mounted) setState(() {});
   }
 
+  // CHANGE LUISA
   void getNewRouteFromAPI() async {
     if (route.routes.isNotEmpty) route.routes.clear();
     if (myRouteList.isNotEmpty) myRouteList.clear();
     log("GETTING NEW ROUTE !!");
+
+    // Obtener la ubicación actual del usuario
+    Position userPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // Si la ubicación del usuario es válida, usa esa ubicación como punto de inicio
+    LatLng userLatLng = LatLng(userPosition.latitude, userPosition.longitude);
+
+    // Dibujar la nueva ruta desde la ubicación del usuario al destino
     await route.drawRoute([
-      LatLng(4.729116356867422, -74.04060057469925),
-      LatLng(_destinationMarker.position.latitude,
-          _destinationMarker.position.longitude)
+      userLatLng,  // Usar la ubicación del usuario
+      LatLng(_destinationMarker.position.latitude, _destinationMarker.position.longitude)
     ], 'route', Color.fromARGB(255, 33, 155, 255), Constants.googleApiKey,
         travelMode: TravelModes.driving);
+
     myRouteList.add(route.routes.first);
+
     if (mounted) setState(() {});
   }
+
+ // void getNewRouteFromAPI() async {
+   // if (route.routes.isNotEmpty) route.routes.clear();
+    //if (myRouteList.isNotEmpty) myRouteList.clear();
+    //log("GETTING NEW ROUTE !!");
+    //await route.drawRoute([
+     // LatLng(4.729116356867422, -74.04060057469925),
+      // LatLng(_destinationMarker.position.latitude,
+         // _destinationMarker.position.longitude)
+    // ], 'route', Color.fromARGB(255, 33, 155, 255), Constants.googleApiKey,
+       // travelMode: TravelModes.driving);
+    //myRouteList.add(route.routes.first);
+    //if (mounted) setState(() {});
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
