@@ -22,7 +22,7 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
   String _darkMapStyle = "";
   StreamSubscription<Position>? _positionStream;
   final CameraPosition _cameraPos = const CameraPosition(
@@ -56,12 +56,14 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
       });
       checkPermissionAndListenLocation();
     });
-    Timer(
-      const Duration(milliseconds: 120000),
-      () async {
-        _showMyDialog();
-      },
-    );
+
+
+    //Timer(
+      //const Duration(milliseconds: 120000),
+        //  () async {
+        //_showMyDialog();
+      //},
+    //);
 
     checkPermissionAndListenLocation();
     super.initState();
@@ -78,7 +80,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     print("====>>>>> my routes ${myRouteList}");
     return Scaffold(
-        /*
+      /*
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Colors.grey[850],
@@ -94,130 +96,131 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
           title: const Text("Emergencias"),
         ),
         body: PermissionProvider.locationPermission !=
-                    PermissionStatus.granted ||
-                _darkMapStyle.isEmpty
+            PermissionStatus.granted ||
+            _darkMapStyle.isEmpty
             ? Container(
-                color: Colors.grey[700],
-                child: const Center(child: CircularProgressIndicator()))
+            color: Colors.grey[700],
+            child: const Center(child: CircularProgressIndicator()))
             : SafeArea(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    width: MediaQuery.sizeOf(context).width,
-                    height: MediaQuery.sizeOf(context).height * 0.87,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: GooglePlacesAutoCompleteTextFormField(
-                              textEditingController: _textController,
-                              googleAPIKey:
-                                  "AIzaSyBX-8AvLmGMqwsA9e3a8rQoLW1QZ0TLIi4",
-                              decoration: const InputDecoration(
-                                hintText: 'Destino',
-                                labelText: 'Dirección',
-                                labelStyle: TextStyle(color: Colors.teal),
-                                border: OutlineInputBorder(),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                              // proxyURL: _yourProxyURL,
-                              maxLines: 1,
-                              overlayContainer: (child) => Material(
-                                elevation: 1.0,
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                child: child,
-                              ),
-                              getPlaceDetailWithLatLng: (prediction) {
-                                print('placeDetails${prediction.lng}');
-                                _firePosition = mtk.LatLng(
-                                    double.parse(prediction.lat ?? "0.0"),
-                                    double.parse(prediction.lng ?? "0.0"));
-                                setState(() {
-                                  destinationFire(
-                                      double.parse(prediction.lat ?? "0.0"),
-                                      double.parse(prediction.lng ?? "0.0"));
-                                });
-                              },
-                              itmClick: (Prediction prediction) =>
-                                  _textController.text =
-                                      prediction.description!,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 10,
-                            child: GoogleMap(
-                              polylines: Set<Polyline>.from(myRouteList),
-                              initialCameraPosition: _cameraPos,
-                              markers: Set<Marker>.from(markerList),
-                              onMapCreated: (GoogleMapController controller) {
-                                if (!_controller.isCompleted) {
-                                  _controller.complete(controller);
-                                }
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  getNewRouteFromAPI();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromRGBO(88, 147, 138, 1),
-                                ),
-                                child: const Row(
-                                  children: [
-                                    Expanded(
-                                        child: Icon(
-                                      Icons.start_outlined,
-                                      color: Colors.white,
-                                    )),
-                                    Expanded(
-                                        flex: 3,
-                                        child: Center(
-                                          child: Text(
-                                            "Comenzar",
-                                            textAlign: TextAlign.justify,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        )),
-                                    Spacer(),
-                                  ],
-                                )),
-                          )
-                        ],
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height * 0.87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: GooglePlacesAutoCompleteTextFormField(
+                        textEditingController: _textController,
+                        googleAPIKey:
+                        "AIzaSyBX-8AvLmGMqwsA9e3a8rQoLW1QZ0TLIi4",
+                        decoration: const InputDecoration(
+                          hintText: 'Destino',
+                          labelText: 'Dirección',
+                          labelStyle: TextStyle(color: Colors.teal),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        // proxyURL: _yourProxyURL,
+                        maxLines: 1,
+                        overlayContainer: (child) => Material(
+                          elevation: 1.0,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          child: child,
+                        ),
+                        getPlaceDetailWithLatLng: (prediction) {
+                          print('placeDetails${prediction.lng}');
+                          _firePosition = mtk.LatLng(
+                              double.parse(prediction.lat ?? "0.0"),
+                              double.parse(prediction.lng ?? "0.0"));
+                          setState(() {
+                            destinationFire(
+                                double.parse(prediction.lat ?? "0.0"),
+                                double.parse(prediction.lng ?? "0.0"));
+                          });
+                        },
+                        itmClick: (Prediction prediction) =>
+                        _textController.text =
+                        prediction.description!,
                       ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 10,
+                      child: GoogleMap(
+                        polylines: Set<Polyline>.from(myRouteList),
+                        initialCameraPosition: _cameraPos,
+                        markers: Set<Marker>.from(markerList),
+                        onMapCreated: (GoogleMapController controller) {
+                          if (!_controller.isCompleted) {
+                            _controller.complete(controller);
+                          }
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () {
+                            getNewRouteFromAPI();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                            Color.fromRGBO(88, 147, 138, 1),
+                          ),
+                          child: const Row(
+                            children: [
+                              Expanded(
+                                  child: Icon(
+                                    Icons.start_outlined,
+                                    color: Colors.white,
+                                  )),
+                              Expanded(
+                                  flex: 3,
+                                  child: Center(
+                                    child: Text(
+                                      "Comenzar",
+                                      textAlign: TextAlign.justify,
+                                      style:
+                                      TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                              Spacer(),
+                            ],
+                          )),
+                    )
+                  ],
                 ),
-              ));
+              ),
+            ),
+          ),
+        ));
   }
 
   Future<void> _showMyDialog() async {
-    return showDialog<void>(
+    // Muestra el diálogo
+    await showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false, // El usuario no puede cerrar el diálogo tocando fuera de él
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Activando semáforo'),
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Se ha enviado una solicitud de activación'),
-                Text('Estas a 50 metros del semáforo más cercano'),
+                Text('Se ha enviado una solicitud de activación de semáforo'),
+                // Puedes agregar más detalles si lo deseas
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Approve'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -226,6 +229,14 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
         );
       },
     );
+
+    // Espera 5 segundos antes de cerrar el diálogo
+    await Future.delayed(Duration(seconds: 5));
+
+    // Cierra el diálogo si está abierto
+    if (Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
   }
 
   void setCustomIconForUserLocation() {
@@ -280,17 +291,18 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
 // Se comentan las líneas que pintan la estación de bomberos
 
     //getBytesFromAsset('assets/fire_station.png', 80).then((onValue) {
-      //destinationIcon = BitmapDescriptor.fromBytes(onValue);
-      //_destinationMarker = Marker(
-        //  markerId: MarkerId("destination"),
-         // icon: destinationIcon,
-          // position: const LatLng(4.729116356867422, -74.04060057469925));
+    //destinationIcon = BitmapDescriptor.fromBytes(onValue);
+    //_destinationMarker = Marker(
+    //  markerId: MarkerId("destination"),
+    // icon: destinationIcon,
+    // position: const LatLng(4.729116356867422, -74.04060057469925));
 
-      //markerList.add(_destinationMarker);
+    //markerList.add(_destinationMarker);
     //});
 
     getBytesFromAsset('assets/traffic_lights.png', 80).then((onValue) {
       var trafficicon = BitmapDescriptor.fromBytes(onValue);
+
       markerList.add(Marker(
           markerId: const MarkerId("1"),
           icon: trafficicon,
@@ -344,6 +356,46 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
           markerId: const MarkerId("11"),
           icon: trafficicon,
           position: const LatLng(4.74939253000002, -74.056427916)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("12"),
+          icon: trafficicon,
+          position: const LatLng(4.748829643, -74.100181609)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("13"),
+          icon: trafficicon,
+          position: const LatLng(4.747168259957861, -74.09727181528785)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("14"),
+          icon: trafficicon,
+          position: const LatLng(4.7458884300475415, -74.09525923717109)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("15"),
+          icon: trafficicon,
+          position: const LatLng(44.746747450648146, -74.09587980158146)));
+
+       markerList.add(Marker(
+        markerId: const MarkerId("16"),
+           icon: trafficicon,
+          position: const LatLng(4.746879554222184, -74.0958665816572)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("17"),
+          icon: trafficicon,
+          position: const LatLng(4.7489526490001, -74.094971139)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("18"),
+          icon: trafficicon,
+          position: const LatLng(4.754094529539928, -74.09202219247895)));
+
+      markerList.add(Marker(
+          markerId: const MarkerId("19"),
+          icon: trafficicon,
+          position: const LatLng(4.745365915, -74.108276011)));
     });
   }
 
@@ -353,7 +405,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
       myLatLngList.add(mtk.LatLng(data.latitude, data.longitude));
     }
     mtk.LatLng myPosition =
-        mtk.LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+    mtk.LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
     // we check if our location is on route or not
     int x = mtk.PolygonUtil.locationIndexOnPath(myPosition, myLatLngList, true,
         tolerance: 12);
@@ -397,18 +449,18 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
     if (mounted) setState(() {});
   }
 
- // void getNewRouteFromAPI() async {
-   // if (route.routes.isNotEmpty) route.routes.clear();
-    //if (myRouteList.isNotEmpty) myRouteList.clear();
-    //log("GETTING NEW ROUTE !!");
-    //await route.drawRoute([
-     // LatLng(4.729116356867422, -74.04060057469925),
-      // LatLng(_destinationMarker.position.latitude,
-         // _destinationMarker.position.longitude)
-    // ], 'route', Color.fromARGB(255, 33, 155, 255), Constants.googleApiKey,
-       // travelMode: TravelModes.driving);
-    //myRouteList.add(route.routes.first);
-    //if (mounted) setState(() {});
+  // void getNewRouteFromAPI() async {
+  // if (route.routes.isNotEmpty) route.routes.clear();
+  //if (myRouteList.isNotEmpty) myRouteList.clear();
+  //log("GETTING NEW ROUTE !!");
+  //await route.drawRoute([
+  // LatLng(4.729116356867422, -74.04060057469925),
+  // LatLng(_destinationMarker.position.latitude,
+  // _destinationMarker.position.longitude)
+  // ], 'route', Color.fromARGB(255, 33, 155, 255), Constants.googleApiKey,
+  // travelMode: TravelModes.driving);
+  //myRouteList.add(route.routes.first);
+  //if (mounted) setState(() {});
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -444,7 +496,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   void startListeningLocation() {
     print("===========>>>>>>>> start listen");
     _positionStream = Geolocator.getPositionStream(
-            locationSettings: LocationSettings(accuracy: LocationAccuracy.high))
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.high))
         .listen((Position? position) {
       print("===========>>>>>>>> ${position}");
       if (position != null) {
@@ -468,12 +520,77 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
     myLocationMarker = Marker(
         markerId: MarkerId("myLocation"),
         position:
-            LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+        LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
         icon: markerIcon,
         rotation: _currentPosition!.heading);
+
+// Validación de notificación por ubicación
+
+    const double targetLatitude0 = 4.745022907591731;
+    const double targetLongitude0 = -74.10867711426246;
+    const double targetLatitude1 = 4.7488446639699555;
+    const double targetLongitude1 = -74.10034916911711;
+    const double targetLatitude2 = 4.747485041395888;
+    const double targetLongitude2 = -74.09769909156573;
+    const double targetLatitude3 = 4.745887272135376;
+    const double targetLongitude3= -74.09564995749123;
+    const double targetLatitude4 = 4.746371986000664;
+    const double targetLongitude4= -74.09575398924099;
+    const double targetLatitude5 = 4.7483551707309095;
+    const double targetLongitude5= -74.09524066870416;
+    const double targetLatitude6 = 4.753691349304659;
+    const double targetLongitude6= -74.0924199670188;
+    const double tolerance = 0.0001; // Tolerancia de 10 metros
+
+
+    // Compara la primera ubicación
+    if ((_currentPosition!.latitude - targetLatitude0).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude0).abs() < tolerance) {
+      _showMyDialog(); // Se encuentra cerca de la primera ubicación
+    }
+
+// Compara la primera ubicación
+    if ((_currentPosition!.latitude - targetLatitude1).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude1).abs() < tolerance) {
+      _showMyDialog(); // Se encuentra cerca de la primera ubicación
+    }
+
+// Compara la segunda ubicación
+    if ((_currentPosition!.latitude - targetLatitude2).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude2).abs() < tolerance) {
+      _showMyDialog();
+    }
+
+    // Compara la segunda ubicación
+    if ((_currentPosition!.latitude - targetLatitude3).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude3).abs() < tolerance) {
+      _showMyDialog();
+    }
+
+    // Compara la segunda ubicación
+    if ((_currentPosition!.latitude - targetLatitude4).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude4).abs() < tolerance) {
+      _showMyDialog(); // Muestra el diálogo
+    }
+
+    // Compara la segunda ubicación
+    if ((_currentPosition!.latitude - targetLatitude5).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude5).abs() < tolerance) {
+      _showMyDialog(); // Muestra el diálogo
+    }
+
+    // Compara la segunda ubicación
+    if ((_currentPosition!.latitude - targetLatitude6).abs() < tolerance &&
+        (_currentPosition!.longitude - targetLongitude6).abs() < tolerance) {
+      _showMyDialog(); // Muestra el diálogo
+    }
+
+    //// Validación de notificación por ubicación
+
     if (markerIcon != BitmapDescriptor.defaultMarker) {
       markerList.add(myLocationMarker!);
     }
     if (mounted) setState(() {});
+
   }
 }
